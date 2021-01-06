@@ -1,0 +1,14 @@
+#!/bin/bash
+
+sinkInputs=$(pactl list short sink-inputs | head -1)
+defaultSink=$(echo $sinkInputs | cut '-d ' -f2)
+
+pactl list short sinks | while read sink; do
+    sinkId=$(echo $sink | cut '-d ' -f1)
+    
+    if [ $sinkId != $defaultSink ]
+    then
+        pacmd set-default-sink $sinkId
+        break
+    fi
+done
